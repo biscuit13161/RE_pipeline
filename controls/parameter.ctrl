@@ -9,7 +9,7 @@
 	export BASE=$PWD # Base folder for ~/LIONS/
 
 # PROJECT -------------------------------------------------
-	export PROJECT='sandbox' # Project Name
+	export PROJECT='rich_test1' # Project Name
 
 	export INPUT_LIST="$BASE/controls/input.list" # <libName> <libPath> <group> csv file
 	# <libPath> is one of
@@ -27,15 +27,15 @@
 
 # RESOURCES ----------------------------------------------
 
-	export INDEX='hg19r' # Genome resource set to use
+	export INDEX='mm9' # Genome resource set to use
 	#  Should be a ~/LIONS/resources/<INDEX>/ folder
 	#  See README file 'RESOURCE INITIALIZATION' to set up
 	#  the folder prior to running LIONS the first time
 
-	export GENESET='refSeq_hg19.ucsc' # Reference Gene Set. UCSC format
+	export GENESET='refSeq_mm9.ucsc' # Reference Gene Set. UCSC format
 	# in ~/LIONS/resources/<INDEX>/annotation/<GENESET>	
 
-	export REPEATMASKER='rm_hg19.ucsc' # RepeatMasker. UCSC format
+	export REPEATMASKER='forChimericSearch.list' # RepeatMasker. UCSC format
 	# in ~/LIONS/resources/<INDEX>/repeat/<REPEATMASKER>
 
 # SYSTEM --------------------------------------------------

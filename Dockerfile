@@ -23,6 +23,12 @@ RUN wget https://excellmedia.dl.sourceforge.net/project/bowtie-bio/bowtie2/2.3.4
     unzip bowtie2-2.3.4.1-linux-x86_64.zip && \
     cp bowtie2-2.3.4.1-linux-x86_64/bowtie2* /usr/local/bin/.
 
+# Install Tophat2
+run wget http://ccb.jhu.edu/software/tophat/downloads/tophat-2.1.1.Linux_x86_64.tar.gz && \
+    tar -zvxf tophat-2.1.1.Linux_x86_64.tar.gz && \
+    cd tophat-2.1.1.Linux_x86_64 &&\
+    find . -perm -111 -type f -exec cp '{}' /usr/local/bin/. \;
+
 # Install OpenJDK 9
 RUN yum -y install java-1.8.0-openjdk-headless java-1.8.0-openjdk-devel
 
@@ -44,20 +50,21 @@ RUN wget https://excellmedia.dl.sourceforge.net/project/samtools/samtools/0.1.18
     tar -jxf samtools-0.1.18.tar.bz2 && \
     cd samtools-0.1.18 && \
     make && \
-    find . -perm -111 -type f -exec cp '{}' /usr/local/bin/. \;
+    find . -perm -111 -type f -exec cp '{}' /usr/local/bin/. \; #&& \
+    #ln /usr/local/bin/samtools /usr/local/bin/samtools_0.1.18
 
 # Install R
 
 RUN yum-builddep -y R
-#RUN yum -y install texlive-latex-bin-bin texinfo texinfo-tex which
 
 
 RUN wget https://cloud.r-project.org/src/base/R-3/R-3.5.0.tar.gz && \
-tar -zxf R-3.5.0.tar.gz && \
-cd R-3.5.0 && \
-./configure && \
-make && \
-cd ..
+    tar -zxf R-3.5.0.tar.gz && \
+    cd R-3.5.0 && \
+    ./configure && \
+    make && \
+    make install && \
+    cd ..
 
 # Install Bedtools
 RUN wget https://github.com/arq5x/bedtools2/releases/download/v2.25.0/bedtools-2.25.0.tar.gz && \

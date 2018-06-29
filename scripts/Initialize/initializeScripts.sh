@@ -58,6 +58,7 @@ echo ''
 
 # Parameter Input Initializations
 	FILE="$INPUT_LIST"; eval $FCHECK_rs #input.list
+        echo $PARAMETER;
 	FILE="$PARAMETER"; eval $FCHECK_rs #parameter.ctrl
 	FILE="$SYSTEMCTRL"; eval $FCHECK_rs #system.sysctrl
 
