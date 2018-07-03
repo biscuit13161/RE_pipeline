@@ -3,7 +3,7 @@ FROM centos:7
 
 # Update Centos
 #RUN yum update
-RUN yum -y install yum-utils make wget xz-devel unzip epel-release gcc-gfortran libXt-devel libcurl-devel 
+RUN yum -y install yum-utils make wget xz-devel unzip epel-release gcc-gfortran libXt-devel libcurl-devel vim less 
 RUN yum-builddep -y python
 
 # Install Python 3 and pysam
