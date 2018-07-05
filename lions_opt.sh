@@ -45,10 +45,11 @@ parameter.sh <options>
 
 where:
   -h | --help                    Show this usage help
+  -P | --parameter <parameter>   Define user parameter.ctrl file, N.B. This option must be defined first.
   -b | --base <path>             Path to working directory
   -p | --project <project_name>  Project identifier
   -i | --inputlist <file>        CSV File containing list of input files and sample data <libName> <libPath> <group> csv file
-  -I | --index                   Genome resource set to use (see README)
+  -I | --index <INDEX>           Genome resource set to use (see README)
   --callsettings                 Pre-set TE-initiation classification settings
   --geneset <ucsc annotation>    UCSC-format annotation file for reference geneset
   --repeatmasker <ucsc>          UCSC-format annotation file for RepeatMasker
@@ -73,16 +74,23 @@ Example:
 
 '''
 
-TEMP=`getopt -o b:p:i:h -l base:,project:,inputlist:,threads:,callsettings:,index:,geneset:,repeatmasker:,systemctrl:,bowtie:,alignbypass:,inread:,denovo:,gtfguide:,minfrag:,multifrag:,mintrim:,trimdrop:,merger:,quality:,cggrouprecurrence:,cgspecificity: \
+TEMP=`getopt -o b:p:i:hI:P: -l parameter:,base:,project:,inputlist:,threads:,callsettings:,index:,geneset:,repeatmasker:,systemctrl:,bowtie:,alignbypass:,inread:,denovo:,gtfguide:,minfrag:,multifrag:,mintrim:,trimdrop:,merger:,quality:,cggrouprecurrence:,cgspecificity: \
 	-- "$@"`
 #	-n 'parameter.sh' -- "$@"`
 echo "$TEMP"
 eval set -- "$TEMP"
 
+if [ "$#" -eq "1" ]; then
+    source $1;
+else
 while true; do
   case "$1" in 
     -h | --help )
 	echo "$usage"; exit ;;
+    -P | --parameter )
+# Users parameter.ctrl file
+        source $2;
+        shift 2 ;;
     -b | --base )
 # The LIONS home folder
 	export BASE="$2"; # Base folder for ~/LIONS/
@@ -99,7 +107,7 @@ while true; do
 	#     B) Sorted paired fastQ files. Comma seperated.
 	#        '/home/lib.fq1,/home/lib.fq2'
     --callsettings )
-	export CALLSETTINGS='oncoexaptation'; shift 2 ;;
+	export CALLSETTINGS="$2"; shift 2 ;;
 	# Pre-set TE-initiation classification settings
         # - 'oncoexapatation'  : Detect high abundance TE isoforms
         # - 'transcriptomeANN' : Artifical Neural Network based classifier
@@ -150,12 +158,12 @@ while true; do
     --inread )
 	# Inner Read distance [-r]
 	# 200 - 75 - 75 = 50
-	INREAD="$2"; 
+	export INREAD="$2"; 
 	export ctrlTH2=" $BOWTIE -p $THREADS -r $INREAD --report-secondary-alignments";
 	shift 2 ;;
 
     --threads )
-	$THREADS="$2";
+	export THREADS="$2";
 	export ctrlTH2=" $BOWTIE -p $THREADS -r $INREAD --report-secondary-alignments";
 	shift 2 ;;
 
@@ -332,6 +340,7 @@ fi
 	# chimGroup command string
 	export CG=$(echo $cgGroupRecurrence $cgSpecificity)
 
+fi
 ##########################################################
 #                     Run analysis                       #
 ##########################################################
