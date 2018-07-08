@@ -34,7 +34,7 @@ echo ''
 # Read parameter file (imports run parameters)
     echo " Importing default file:"
     echo "      ./LIONS/controls/parameter.ctrl"
-    export PARAMETER="controls/parameter.ctrl"
+    export PARAMETER="./controls/parameter.ctrl"
     echo ''
 # Run parameter script
     source $PARAMETER # works in bash only
@@ -80,8 +80,10 @@ TEMP=`getopt -o b:p:i:hI:P: -l parameter:,base:,project:,inputlist:,threads:,cal
 echo "$TEMP"
 eval set -- "$TEMP"
 
-if [ "$#" -eq "1" ]; then
-    source $1;
+if [ "$#" -eq "2" ]; then
+    echo "Only one argument, $2";
+    export PARAMETER="$2"
+    source $2;
 else
 while true; do
   case "$1" in 
@@ -89,6 +91,8 @@ while true; do
 	echo "$usage"; exit ;;
     -P | --parameter )
 # Users parameter.ctrl file
+        echo "Multiple arguments, $2";
+        export PARAMETER="$2"
         source $2;
         shift 2 ;;
     -b | --base )
